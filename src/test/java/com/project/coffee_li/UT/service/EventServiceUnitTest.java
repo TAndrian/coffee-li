@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.project.coffee_li.utils.EventMocks.COFFEE_NIGHT_TYPE;
-import static com.project.coffee_li.utils.EventMocks.EVENT_DISCO_ID;
+import static com.project.coffee_li.utils.EventMocks.DISCO_EVENT_ID;
 import static com.project.coffee_li.utils.EventMocks.MOCK_CREATED_EVENT_DTO;
 import static com.project.coffee_li.utils.EventMocks.MOCK_CREATE_EVENT_DTO;
 import static com.project.coffee_li.utils.EventMocks.MOCK_CREATE_EVENT_ENTITY;
@@ -139,7 +139,7 @@ class EventServiceUnitTest {
     @Test
     void given_eventId_and_updateEventDto_when_updateEvent_then_return_updated_event() {
         // ARRANGE
-        when(eventRepository.findById(EVENT_DISCO_ID))
+        when(eventRepository.findById(DISCO_EVENT_ID))
                 .thenReturn(Optional.ofNullable(MOCK_DISCO_EVENT_ENTITY));
         doNothing().when(eventMapper).updateEventFromDTO(MOCK_UPDATE_EVENT_DTO, MOCK_DISCO_EVENT_ENTITY);
 
@@ -148,11 +148,11 @@ class EventServiceUnitTest {
         when(eventMapper.toDTO(MOCK_UPDATED_EVENT_ENTITY)).thenReturn(MOCK_UPDATED_EVENT_DTO);
 
         // ACT
-        EventDTO expected = eventService.updateEvent(EVENT_DISCO_ID, MOCK_UPDATE_EVENT_DTO);
+        EventDTO expected = eventService.updateEvent(DISCO_EVENT_ID, MOCK_UPDATE_EVENT_DTO);
 
         // ASSERT
         assertAll(
-                () -> verify(eventRepository, times(1)).findById(EVENT_DISCO_ID),
+                () -> verify(eventRepository, times(1)).findById(DISCO_EVENT_ID),
                 () -> verify(eventRepository, times(1)).save(any()),
                 () -> verify(eventMapper, times(1))
                         .updateEventFromDTO(MOCK_UPDATE_EVENT_DTO, MOCK_DISCO_EVENT_ENTITY),
@@ -165,14 +165,14 @@ class EventServiceUnitTest {
     @Test
     void given_eventId_when_deleteEvent_then_delete_event_and_return_true() {
         // ARRANGE
-        when(eventRepository.findById(EVENT_DISCO_ID))
+        when(eventRepository.findById(DISCO_EVENT_ID))
                 .thenReturn(Optional.ofNullable(MOCK_DISCO_EVENT_ENTITY));
 
         assert MOCK_DISCO_EVENT_ENTITY != null;
         doNothing().when(eventRepository).delete(MOCK_DISCO_EVENT_ENTITY);
 
         // ACT
-        boolean expected = eventService.deleteEvent(EVENT_DISCO_ID);
+        boolean expected = eventService.deleteEvent(DISCO_EVENT_ID);
 
         // ASSERT
         assertAll(

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class EventMocks {
-    public static final UUID EVENT_DISCO_ID = UUID.randomUUID();
+    public static final UUID DISCO_EVENT_ID = UUID.randomUUID();
     public static final UUID EVENT_COFFEE_ID = UUID.randomUUID();
     public static final UUID SPECIAL_EVENT_ID = UUID.randomUUID();
 
@@ -42,7 +42,7 @@ public class EventMocks {
     public static List<EventEntity> eventEntities() {
         return List.of(
                 EventEntity.builder()
-                        .id(EVENT_DISCO_ID)
+                        .id(DISCO_EVENT_ID)
                         .title(BOOM_BOOM_NIGHT_TITLE)
                         .eventDate(DISCO_EVENT_DATE)
                         .eventType(EventTypeEnum.DISCO)
@@ -64,7 +64,7 @@ public class EventMocks {
 
     public static List<EventDTO> eventDTOs() {
         List<EventDTO> eventDTOS = new ArrayList<>();
-        EventDTO eventDisco = new EventDTO(EVENT_DISCO_ID, BOOM_BOOM_NIGHT_TITLE, DISCO_EVENT_DATE, DISCO_TYPE);
+        EventDTO eventDisco = new EventDTO(DISCO_EVENT_ID, BOOM_BOOM_NIGHT_TITLE, DISCO_EVENT_DATE, DISCO_TYPE);
         EventDTO eventCoffee = new EventDTO(EVENT_COFFEE_ID, COFFEE_CHILL_TITLE, COFFEE_EVENT_DATE, COFFEE_NIGHT_TYPE);
         EventDTO specialEvent = new EventDTO(SPECIAL_EVENT_ID, WEDDING_TITLE, SPECIAL_EVENT_DATE, SPECIAL_EVENT_TYPE);
         eventDTOS.add(eventDisco);
@@ -104,7 +104,7 @@ public class EventMocks {
 
     public static EventEntity updatedEventEntity() {
         return EventEntity.builder()
-                .id(EVENT_DISCO_ID)
+                .id(DISCO_EVENT_ID)
                 .title(UPDATE_EVENT_TITLE)
                 .eventDate(MOCK_DISCO_EVENT_ENTITY.getEventDate())
                 .eventType(EventTypeEnum.COFFEE_NIGHT)
@@ -113,7 +113,7 @@ public class EventMocks {
 
     public static EventDTO updatedEventDTO() {
         return new EventDTO(
-                EVENT_DISCO_ID,
+                DISCO_EVENT_ID,
                 UPDATE_EVENT_TITLE,
                 MOCK_DISCO_EVENT_ENTITY.getEventDate(),
                 COFFEE_NIGHT_TYPE
