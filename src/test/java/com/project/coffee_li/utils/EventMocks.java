@@ -16,6 +16,9 @@ public class EventMocks {
 
     public static final String NEW_EVENT_TITLE = "NEW EVENT";
     public static final String UPDATE_EVENT_TITLE = "UPDATE_EVENT";
+    public static final String BOOM_BOOM_NIGHT_TITLE = "BOOM BOOM NIGHT";
+    public static final String COFFEE_CHILL_TITLE = "COFFEE & CHILL";
+    public static final String WEDDING_TITLE = "WEDDING";
 
     public static final LocalDate COFFEE_EVENT_DATE = LocalDate.now().plusDays(1);
     public static final LocalDate DISCO_EVENT_DATE = LocalDate.now();
@@ -29,24 +32,30 @@ public class EventMocks {
     public static final List<EventEntity> MOCK_EVENTS_ENTITY = eventEntities();
     public static final EventDTO MOCK_CREATE_EVENT_DTO = createEventDTO();
     public static final EventEntity MOCK_CREATE_EVENT_ENTITY = createEventEntity();
+    public static final EventDTO MOCK_CREATED_EVENT_DTO = createdEventDTO();
     public static final EventDTO MOCK_UPDATE_EVENT_DTO = updateEventDTO();
-
     public static final EventDTO MOCK_INCORRECT_CREATE_EVENT_DTO = incorrectCreateEventDTO();
+    public static final EventEntity MOCK_DISCO_EVENT_ENTITY = MOCK_EVENTS_ENTITY.get(0);
+    public static final EventDTO MOCK_UPDATED_EVENT_DTO = updatedEventDTO();
+    public static final EventEntity MOCK_UPDATED_EVENT_ENTITY = updatedEventEntity();
 
     public static List<EventEntity> eventEntities() {
         return List.of(
                 EventEntity.builder()
                         .id(EVENT_DISCO_ID)
+                        .title(BOOM_BOOM_NIGHT_TITLE)
                         .eventDate(DISCO_EVENT_DATE)
                         .eventType(EventTypeEnum.DISCO)
                         .build(),
                 EventEntity.builder()
                         .id(EVENT_COFFEE_ID)
+                        .title(COFFEE_CHILL_TITLE)
                         .eventDate(COFFEE_EVENT_DATE)
                         .eventType(EventTypeEnum.COFFEE_NIGHT)
                         .build(),
                 EventEntity.builder()
-                        .id(EVENT_DISCO_ID)
+                        .id(SPECIAL_EVENT_ID)
+                        .title(WEDDING_TITLE)
                         .eventDate(SPECIAL_EVENT_DATE)
                         .eventType(EventTypeEnum.SPECIAL_EVENT)
                         .build()
@@ -55,9 +64,9 @@ public class EventMocks {
 
     public static List<EventDTO> eventDTOs() {
         List<EventDTO> eventDTOS = new ArrayList<>();
-        EventDTO eventDisco = new EventDTO(EVENT_DISCO_ID, "BOOM BOOM NIGHT", DISCO_EVENT_DATE, DISCO_TYPE);
-        EventDTO eventCoffee = new EventDTO(EVENT_COFFEE_ID, "COFFEE & CHILL", COFFEE_EVENT_DATE, COFFEE_NIGHT_TYPE);
-        EventDTO specialEvent = new EventDTO(SPECIAL_EVENT_ID, "WEDDING", SPECIAL_EVENT_DATE, SPECIAL_EVENT_TYPE);
+        EventDTO eventDisco = new EventDTO(EVENT_DISCO_ID, BOOM_BOOM_NIGHT_TITLE, DISCO_EVENT_DATE, DISCO_TYPE);
+        EventDTO eventCoffee = new EventDTO(EVENT_COFFEE_ID, COFFEE_CHILL_TITLE, COFFEE_EVENT_DATE, COFFEE_NIGHT_TYPE);
+        EventDTO specialEvent = new EventDTO(SPECIAL_EVENT_ID, WEDDING_TITLE, SPECIAL_EVENT_DATE, SPECIAL_EVENT_TYPE);
         eventDTOS.add(eventDisco);
         eventDTOS.add(eventCoffee);
         eventDTOS.add(specialEvent);
@@ -80,8 +89,34 @@ public class EventMocks {
                 .build();
     }
 
+    public static EventDTO createdEventDTO() {
+        return new EventDTO(
+                UUID.randomUUID(),
+                NEW_EVENT_TITLE,
+                MOCK_CREATE_EVENT_DTO.eventDate(),
+                COFFEE_NIGHT_TYPE
+        );
+    }
 
     public static EventDTO updateEventDTO() {
         return new EventDTO(null, UPDATE_EVENT_TITLE, null, COFFEE_NIGHT_TYPE);
+    }
+
+    public static EventEntity updatedEventEntity() {
+        return EventEntity.builder()
+                .id(EVENT_DISCO_ID)
+                .title(UPDATE_EVENT_TITLE)
+                .eventDate(MOCK_DISCO_EVENT_ENTITY.getEventDate())
+                .eventType(EventTypeEnum.COFFEE_NIGHT)
+                .build();
+    }
+
+    public static EventDTO updatedEventDTO() {
+        return new EventDTO(
+                EVENT_DISCO_ID,
+                UPDATE_EVENT_TITLE,
+                MOCK_DISCO_EVENT_ENTITY.getEventDate(),
+                COFFEE_NIGHT_TYPE
+        );
     }
 }

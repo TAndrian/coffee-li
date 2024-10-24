@@ -4,7 +4,6 @@ import com.project.coffee_li.dto.EventDTO;
 import com.project.coffee_li.exception.ConflictException;
 import com.project.coffee_li.exception.NotFoundException;
 import com.project.coffee_li.mapper.EventMapper;
-import com.project.coffee_li.model.EventEntity;
 import com.project.coffee_li.repository.EventRepository;
 import com.project.coffee_li.service.impl.EventServiceImpl;
 import com.project.coffee_li.utils.EventMocks;
@@ -20,17 +19,20 @@ import java.util.UUID;
 
 import static com.project.coffee_li.utils.EventMocks.COFFEE_NIGHT_TYPE;
 import static com.project.coffee_li.utils.EventMocks.EVENT_DISCO_ID;
+import static com.project.coffee_li.utils.EventMocks.MOCK_CREATED_EVENT_DTO;
 import static com.project.coffee_li.utils.EventMocks.MOCK_CREATE_EVENT_DTO;
 import static com.project.coffee_li.utils.EventMocks.MOCK_CREATE_EVENT_ENTITY;
+import static com.project.coffee_li.utils.EventMocks.MOCK_DISCO_EVENT_ENTITY;
 import static com.project.coffee_li.utils.EventMocks.MOCK_EVENTS_DTO;
 import static com.project.coffee_li.utils.EventMocks.MOCK_EVENTS_ENTITY;
 import static com.project.coffee_li.utils.EventMocks.MOCK_INCORRECT_CREATE_EVENT_DTO;
+import static com.project.coffee_li.utils.EventMocks.MOCK_UPDATED_EVENT_DTO;
+import static com.project.coffee_li.utils.EventMocks.MOCK_UPDATED_EVENT_ENTITY;
 import static com.project.coffee_li.utils.EventMocks.MOCK_UPDATE_EVENT_DTO;
 import static com.project.coffee_li.utils.EventMocks.NEW_EVENT_TITLE;
 import static com.project.coffee_li.utils.EventMocks.UPDATE_EVENT_TITLE;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -42,7 +44,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class EventServiceUnitTest {
 
-    public static final EventEntity MOCK_DISCO_EVENT_ENTITY = MOCK_EVENTS_ENTITY.get(0);
 
     @InjectMocks
     private EventServiceImpl eventService;
@@ -74,19 +75,21 @@ class EventServiceUnitTest {
     @Test
     void given_correct_createEventDto_when_createEvent_then_return_created_event() {
         // ARRANGE
+        when(eventRepository.existsByEventDate(MOCK_CREATE_EVENT_DTO.eventDate()))
+                .thenReturn(false);
         when(eventMapper.fromDTO(MOCK_CREATE_EVENT_DTO))
                 .thenReturn(MOCK_CREATE_EVENT_ENTITY);
-        when(eventRepository.save(any()))
+        when(eventRepository.save(MOCK_CREATE_EVENT_ENTITY))
                 .thenReturn(any());
-        when(eventMapper.toDTO(any()))
-                .thenReturn(any());
+        when(eventMapper.toDTO(MOCK_DISCO_EVENT_ENTITY))
+                .thenReturn(MOCK_CREATED_EVENT_DTO);
 
         // ACT
         EventDTO expected = eventService.createEvent(MOCK_CREATE_EVENT_DTO);
 
         // ASSERT
         assertAll(
-                () -> verify(eventRepository, times(1)).findByEventDate(any()),
+                () -> verify(eventRepository, times(1)).existsByEventDate(any()),
                 () -> verify(eventRepository, times(1)).save(any()),
                 () -> verify(eventMapper, times(1)).fromDTO(MOCK_CREATE_EVENT_DTO),
                 () -> verify(eventMapper, times(1)).toDTO(any()),
@@ -99,8 +102,8 @@ class EventServiceUnitTest {
     @Test
     void given_incorrect_createEventDto_when_createEvent_then_return_bad_request_error() {
         // ARRANGE
-        when(eventRepository.findByEventDate(MOCK_INCORRECT_CREATE_EVENT_DTO.eventDate()))
-                .thenThrow(ConflictException.class);
+        when(eventRepository.existsByEventDate(MOCK_INCORRECT_CREATE_EVENT_DTO.eventDate()))
+                .thenReturn(true);
 
         // ACT
         assertThrows(
@@ -110,7 +113,7 @@ class EventServiceUnitTest {
 
         // ASSERT
         assertAll(
-                () -> verify(eventRepository, times(1)).findByEventDate(any()),
+                () -> verify(eventRepository, times(1)).existsByEventDate(any()),
                 () -> verify(eventMapper, times(0)).fromDTO(MOCK_INCORRECT_CREATE_EVENT_DTO),
                 () -> verify(eventMapper, times(0)).toDTO(any()),
                 () -> verify(eventRepository, times(0)).save(any())
@@ -139,8 +142,10 @@ class EventServiceUnitTest {
         when(eventRepository.findById(EVENT_DISCO_ID))
                 .thenReturn(Optional.ofNullable(MOCK_DISCO_EVENT_ENTITY));
         doNothing().when(eventMapper).updateEventFromDTO(MOCK_UPDATE_EVENT_DTO, MOCK_DISCO_EVENT_ENTITY);
-        when(eventRepository.save(any())).thenReturn(any());
-        when(eventMapper.toDTO(any())).thenReturn(any());
+
+        assert MOCK_DISCO_EVENT_ENTITY != null;
+        when(eventRepository.save(MOCK_DISCO_EVENT_ENTITY)).thenReturn(MOCK_UPDATED_EVENT_ENTITY);
+        when(eventMapper.toDTO(MOCK_UPDATED_EVENT_ENTITY)).thenReturn(MOCK_UPDATED_EVENT_DTO);
 
         // ACT
         EventDTO expected = eventService.updateEvent(EVENT_DISCO_ID, MOCK_UPDATE_EVENT_DTO);
@@ -172,8 +177,7 @@ class EventServiceUnitTest {
         // ASSERT
         assertAll(
                 () -> assertTrue(expected),
-                () -> verify(eventRepository, times(1)).delete(MOCK_DISCO_EVENT_ENTITY),
-                () -> assertNull(eventRepository.findById(EVENT_DISCO_ID).orElse(null))
+                () -> verify(eventRepository, times(1)).delete(MOCK_DISCO_EVENT_ENTITY)
         );
     }
 }
