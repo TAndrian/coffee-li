@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.UUID;
 
 public class EventMocks {
-    public static final UUID DISCO_EVENT_ID = UUID.randomUUID();
-    public static final UUID EVENT_COFFEE_ID = UUID.randomUUID();
-    public static final UUID SPECIAL_EVENT_ID = UUID.randomUUID();
+    public static final UUID DISCO_EVENT_ID = eventEntities().get(0).getId();
+    public static final UUID EVENT_COFFEE_ID = eventEntities().get(1).getId();
+    public static final UUID SPECIAL_EVENT_ID = eventEntities().get(2).getId();
 
     public static final String NEW_EVENT_TITLE = "NEW EVENT";
     public static final String UPDATE_EVENT_TITLE = "UPDATE_EVENT";
@@ -42,19 +42,16 @@ public class EventMocks {
     public static List<EventEntity> eventEntities() {
         return List.of(
                 EventEntity.builder()
-                        .id(DISCO_EVENT_ID)
                         .title(BOOM_BOOM_NIGHT_TITLE)
                         .eventDate(DISCO_EVENT_DATE)
                         .eventType(EventTypeEnum.DISCO)
                         .build(),
                 EventEntity.builder()
-                        .id(EVENT_COFFEE_ID)
                         .title(COFFEE_CHILL_TITLE)
                         .eventDate(COFFEE_EVENT_DATE)
                         .eventType(EventTypeEnum.COFFEE_NIGHT)
                         .build(),
                 EventEntity.builder()
-                        .id(SPECIAL_EVENT_ID)
                         .title(WEDDING_TITLE)
                         .eventDate(SPECIAL_EVENT_DATE)
                         .eventType(EventTypeEnum.SPECIAL_EVENT)
