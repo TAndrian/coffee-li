@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.UUID;
 
 public class EventMocks {
-    public static final UUID DISCO_EVENT_ID = eventEntities().get(0).getId();
-    public static final UUID EVENT_COFFEE_ID = eventEntities().get(1).getId();
-    public static final UUID SPECIAL_EVENT_ID = eventEntities().get(2).getId();
+    public static final UUID DISCO_EVENT_ID = UUID.randomUUID();
+    public static final UUID COFFEE_NIGHT_ID = UUID.randomUUID();
+    public static final UUID SPECIAL_EVENT_ID = UUID.randomUUID();
 
     public static final String NEW_EVENT_TITLE = "NEW EVENT";
     public static final String UPDATE_EVENT_TITLE = "UPDATE_EVENT";
@@ -42,16 +42,19 @@ public class EventMocks {
     public static List<EventEntity> eventEntities() {
         return List.of(
                 EventEntity.builder()
+                        .id(DISCO_EVENT_ID)
                         .title(BOOM_BOOM_NIGHT_TITLE)
                         .eventDate(DISCO_EVENT_DATE)
                         .eventType(EventTypeEnum.DISCO)
                         .build(),
                 EventEntity.builder()
+                        .id(COFFEE_NIGHT_ID)
                         .title(COFFEE_CHILL_TITLE)
                         .eventDate(COFFEE_EVENT_DATE)
                         .eventType(EventTypeEnum.COFFEE_NIGHT)
                         .build(),
                 EventEntity.builder()
+                        .id(SPECIAL_EVENT_ID)
                         .title(WEDDING_TITLE)
                         .eventDate(SPECIAL_EVENT_DATE)
                         .eventType(EventTypeEnum.SPECIAL_EVENT)
@@ -62,7 +65,7 @@ public class EventMocks {
     public static List<EventDTO> eventDTOs() {
         List<EventDTO> eventDTOS = new ArrayList<>();
         EventDTO eventDisco = new EventDTO(DISCO_EVENT_ID, BOOM_BOOM_NIGHT_TITLE, DISCO_EVENT_DATE, DISCO_TYPE);
-        EventDTO eventCoffee = new EventDTO(EVENT_COFFEE_ID, COFFEE_CHILL_TITLE, COFFEE_EVENT_DATE, COFFEE_NIGHT_TYPE);
+        EventDTO eventCoffee = new EventDTO(COFFEE_NIGHT_ID, COFFEE_CHILL_TITLE, COFFEE_EVENT_DATE, COFFEE_NIGHT_TYPE);
         EventDTO specialEvent = new EventDTO(SPECIAL_EVENT_ID, WEDDING_TITLE, SPECIAL_EVENT_DATE, SPECIAL_EVENT_TYPE);
         eventDTOS.add(eventDisco);
         eventDTOS.add(eventCoffee);
