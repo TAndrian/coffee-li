@@ -29,9 +29,8 @@ public class EventEntity extends TemporalBaseUtil {
     @Column(columnDefinition = "uuid", updatable = false, nullable = false)
     @ColumnDefault("gen_random_uuid()")
     private UUID id;
-
+    private String title;
     private LocalDate eventDate;
     @Enumerated(EnumType.STRING)
     private EventTypeEnum eventType;
-
 }
